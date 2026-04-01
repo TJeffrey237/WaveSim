@@ -19,6 +19,7 @@ public class GameController : MonoBehaviour
     public int totalTrashToClear;
     private int totalDroppedTrash;
     public int DroppedTrashCount => totalDroppedTrash;
+    public bool isGameOver { get; private set; }
     private int zonesCleared;
 
     void Awake()
@@ -39,9 +40,6 @@ public class GameController : MonoBehaviour
         if (boat == null)
             boat = FindObjectOfType<BoatController>();
 
-        if (trashPrefab == null)
-            Debug.LogWarning("GameController needs a TrashPiece prefab assigned.");
-
         if (trashZones.Count == 0)
             trashZones.AddRange(FindObjectsOfType<TrashZone>());
 
@@ -61,7 +59,6 @@ public class GameController : MonoBehaviour
     public void NotifyZoneCleared(TrashZone zone)
     {
         zonesCleared++;
-        Debug.Log($"Zone cleared: {zone.name} ({zonesCleared}/{trashZones.Count}).");
         CheckGameEnd();
     }
 
@@ -73,9 +70,9 @@ public class GameController : MonoBehaviour
 
     private void CheckGameEnd()
     {
-        if (totalDroppedTrash >= totalTrashToClear && zonesCleared >= trashZones.Count)
+        if (!isGameOver && totalDroppedTrash >= totalTrashToClear && zonesCleared >= trashZones.Count)
         {
-            Debug.Log("All dock zones are cleared and all trash has been unloaded. You win!");
+            isGameOver = true;
         }
     }
 }

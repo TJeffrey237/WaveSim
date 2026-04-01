@@ -1,11 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
     public TextMeshProUGUI weightText;
     public TextMeshProUGUI holdingText;
     public TextMeshProUGUI collectedText;
+    public GameObject winPopup;
+    public string mainMenuSceneName = "MainMenu";
 
     private GameController gameController;
     private BoatController boat;
@@ -13,25 +16,18 @@ public class GameUI : MonoBehaviour
     void Start()
     {
         gameController = GameController.Instance;
-        if (gameController == null)
-        {
-            Debug.LogWarning("GameUI: No GameController instance found.");
-            return;
-        }
 
         boat = gameController.boat;
         if (boat == null)
         {
             boat = FindObjectOfType<BoatController>();
-            if (boat != null)
-            {
+            if (boat != null) {
                 gameController.boat = boat;
             }
-            else
-            {
-                Debug.LogWarning("GameUI: No BoatController found in scene.");
-            }
         }
+
+        if (winPopup != null)
+            winPopup.SetActive(false);
     }
 
     void Update()
@@ -47,5 +43,15 @@ public class GameUI : MonoBehaviour
 
         if (collectedText != null)
             collectedText.text = $"Dropped Off: {gameController.DroppedTrashCount}/{gameController.totalTrashToClear}";
+
+        if (gameController.isGameOver && winPopup != null && !winPopup.activeSelf)
+        {
+            winPopup.SetActive(true);
+        }
+    }
+
+    public void OnReturnToMainMenu()
+    {
+        SceneManager.LoadScene(mainMenuSceneName);
     }
 }

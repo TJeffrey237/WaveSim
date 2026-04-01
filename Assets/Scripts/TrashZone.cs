@@ -6,7 +6,6 @@ public class TrashZone : MonoBehaviour
     public int trashCount = 4;
     public float radius = 6f;
     public TrashPiece trashPrefab;
-    public bool drawGizmo = true;
 
     [HideInInspector]
     public int remainingTrash;
@@ -39,12 +38,6 @@ public class TrashZone : MonoBehaviour
 
     private void SpawnTrash()
     {
-        if (trashPrefab == null)
-        {
-            Debug.LogWarning($"TrashZone on {name} has no TrashPrefab assigned.");
-            return;
-        }
-
         remainingTrash = trashCount;
         for (int i = 0; i < trashCount; i++)
         {
@@ -64,14 +57,5 @@ public class TrashZone : MonoBehaviour
             clearedNotified = true;
             gameController?.NotifyZoneCleared(this);
         }
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (!drawGizmo)
-            return;
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }
