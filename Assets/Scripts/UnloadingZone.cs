@@ -14,7 +14,12 @@ public class UnloadingZone : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        BoatController boat = other.GetComponent<BoatController>();
+        BoatController boat = other.GetComponentInParent<BoatController>();
+        if (boat == null && other.attachedRigidbody != null)
+        {
+            boat = other.attachedRigidbody.GetComponent<BoatController>();
+        }
+
         if (boat == null)
             return;
 

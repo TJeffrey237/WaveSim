@@ -30,7 +30,8 @@ public class TrashZone : MonoBehaviour
             gameController = GameController.Instance;
         }
 
-        if (trashPrefab != null && remainingTrash == 0)
+        // Only self-spawn if no GameController is managing this zone.
+        if (gameController == null && trashPrefab != null && remainingTrash == 0)
         {
             SpawnTrash();
         }
@@ -57,6 +58,7 @@ public class TrashZone : MonoBehaviour
     public void NotifyTrashCollected()
     {
         remainingTrash = Mathf.Max(0, remainingTrash - 1);
+        gameController?.NotifyTrashCollected();
 
         if (remainingTrash == 0 && !clearedNotified)
         {
