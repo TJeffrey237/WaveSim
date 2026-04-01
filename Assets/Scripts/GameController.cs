@@ -16,11 +16,9 @@ public class GameController : MonoBehaviour
     public float zoneRadius = 6f;
 
     [HideInInspector]
-    public int totalCollectedTrash;
-
-    [HideInInspector]
     public int totalTrashToClear;
     private int totalDroppedTrash;
+    public int TotalDroppedTrash => totalDroppedTrash;
     private int zonesCleared;
 
     void Awake()
@@ -67,16 +65,9 @@ public class GameController : MonoBehaviour
         CheckGameEnd();
     }
 
-    public void NotifyTrashCollected()
-    {
-        totalCollectedTrash++;
-        Debug.Log($"Trash collected: {totalCollectedTrash}/{totalTrashToClear}.");
-    }
-
     public void NotifyTrashDropped(int droppedCount)
     {
         totalDroppedTrash += droppedCount;
-        Debug.Log($"Dropped off {droppedCount} trash piece(s). Total dropped: {totalDroppedTrash}/{totalTrashToClear}.");
         CheckGameEnd();
     }
 

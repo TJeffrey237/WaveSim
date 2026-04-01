@@ -58,7 +58,6 @@ public class TrashZone : MonoBehaviour
     public void NotifyTrashCollected()
     {
         remainingTrash = Mathf.Max(0, remainingTrash - 1);
-        gameController?.NotifyTrashCollected();
 
         if (remainingTrash == 0 && !clearedNotified)
         {

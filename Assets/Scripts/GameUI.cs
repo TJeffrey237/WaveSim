@@ -1,11 +1,11 @@
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
-    public Text weightText;
-    public Text holdingText;
-    public Text collectedText;
+    public TextMeshProUGUI weightText;
+    public TextMeshProUGUI holdingText;
+    public TextMeshProUGUI collectedText;
 
     private GameController gameController;
     private BoatController boat;
@@ -22,7 +22,15 @@ public class GameUI : MonoBehaviour
         boat = gameController.boat;
         if (boat == null)
         {
-            Debug.LogWarning("GameUI: No BoatController reference set in GameController.");
+            boat = FindObjectOfType<BoatController>();
+            if (boat != null)
+            {
+                gameController.boat = boat;
+            }
+            else
+            {
+                Debug.LogWarning("GameUI: No BoatController found in scene.");
+            }
         }
     }
 
@@ -38,6 +46,6 @@ public class GameUI : MonoBehaviour
             holdingText.text = $"Holding: {boat.carriedTrashCount}";
 
         if (collectedText != null)
-            collectedText.text = $"Collected: {gameController.totalCollectedTrash}/{gameController.totalTrashToClear}";
+            collectedText.text = $"Dropped Off: {gameController.TotalDroppedTrash}/{gameController.totalTrashToClear}";
     }
 }
