@@ -8,14 +8,17 @@ public class BoatFollowCamera : MonoBehaviour
     public Transform target;
     public Vector3 offset = new Vector3(0f, 5f, -10f);
     public Transform goalPos;
-    public float smoothSpeed = 1f;
+    public float smoothTime = 0.25f;
+
+    private Vector3 velocity;
 
     void LateUpdate()
     {
-        Vector3 delta = target.position - transform.position;
-        float distMultiplier = delta.x * delta.x + delta.y * delta.y + delta.z * delta.z;
-
-        transform.position = Vector3.MoveTowards(transform.position, goalPos.position, smoothSpeed);
-        transform.LookAt(target);
+        Vector3 targetPosition = goalPos ? goalPos.position : target.position + offset;
+        transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+        if (target)
+        {
+            transform.LookAt(target);
+        }
     }
 }
