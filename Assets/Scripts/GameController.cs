@@ -18,7 +18,7 @@ public class GameController : MonoBehaviour
     [HideInInspector]
     public int totalTrashToClear;
     private int totalDroppedTrash;
-    public int TotalDroppedTrash => totalDroppedTrash;
+    public int DroppedTrashCount => totalDroppedTrash;
     private int zonesCleared;
 
     void Awake()

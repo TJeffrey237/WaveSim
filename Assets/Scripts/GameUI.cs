@@ -46,6 +46,6 @@ public class GameUI : MonoBehaviour
             holdingText.text = $"Holding: {boat.carriedTrashCount}";
 
         if (collectedText != null)
-            collectedText.text = $"Dropped Off: {gameController.TotalDroppedTrash}/{gameController.totalTrashToClear}";
+            collectedText.text = $"Dropped Off: {gameController.DroppedTrashCount}/{gameController.totalTrashToClear}";
     }
 }
