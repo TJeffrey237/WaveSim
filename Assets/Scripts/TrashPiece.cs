@@ -11,16 +11,17 @@ public class TrashPiece : MonoBehaviour
     public TrashZone zone;
 
     private bool collected;
-    private Collider cachedCollider;
-    private Renderer cachedRenderer;
+    private Collider[] cachedColliders;
+    private Renderer[] cachedRenderers;
 
     void Awake()
     {
-        cachedCollider = GetComponent<Collider>();
-        cachedRenderer = GetComponentInChildren<Renderer>();
-        if (cachedCollider != null)
+        cachedColliders = GetComponentsInChildren<Collider>();
+        cachedRenderers = GetComponentsInChildren<Renderer>();
+
+        foreach (Collider c in cachedColliders)
         {
-            cachedCollider.isTrigger = true;
+            c.isTrigger = true;
         }
 
         weight = Random.Range(minWeight, maxWeight);
@@ -36,7 +37,12 @@ public class TrashPiece : MonoBehaviour
         if (collected)
             return;
 
-        BoatController boat = other.GetComponent<BoatController>();
+        BoatController boat = other.GetComponentInParent<BoatController>();
+        if (boat == null && other.attachedRigidbody != null)
+        {
+            boat = other.attachedRigidbody.GetComponent<BoatController>();
+        }
+
         if (boat == null)
             return;
 
@@ -53,11 +59,17 @@ public class TrashPiece : MonoBehaviour
         boat.carriedTrashCount += 1;
         zone.NotifyTrashCollected();
 
-        if (cachedRenderer != null)
-            cachedRenderer.enabled = false;
+        foreach (Renderer r in cachedRenderers)
+        {
+            if (r != null)
+                r.enabled = false;
+        }
 
-        if (cachedCollider != null)
-            cachedCollider.enabled = false;
+        foreach (Collider c in cachedColliders)
+        {
+            if (c != null)
+                c.enabled = false;
+        }
 
         Debug.Log($"Picked up trash weighing {weight:F1}. Boat weight is now {boat.weight:F1}.");
     }
